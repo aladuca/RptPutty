@@ -31,7 +31,7 @@ namespace RptPutty.Controllers
 
         // POST: /api/generator.json
         // Receieve report parameter inputs for use in generation
-        public JobStatus post(ReportJob reportJob)
+        public JobStatus post ([FromBody] ReportJob reportJob)
         {
             return dispatcher.dispatch(reportJob);
         }

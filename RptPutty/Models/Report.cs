@@ -45,13 +45,14 @@ namespace RptPutty.Models
     }
     public class ReportSubmit : Report
     {
-        public Output Output { get; set; }
+        public Output SelectedOutput { get; set; }
     }
     public class Parameters
     {
         public Parameters()
         {
             DiscreteValues = new Dictionary<string, string>();
+            SelectedValues = new List<string>();
         }
         public string Name { get; set; }
         public bool MultipleSelect { get; set; }

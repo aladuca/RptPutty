@@ -20,6 +20,10 @@ namespace RptPutty.Services
             String jobFName = ConfigurationManager.AppSettings["rptDynamoJobLocation"] + reportJob.JobID + ".txt";
             File.WriteAllText(jobFName, jss.Serialize(reportJob));
 
+            JobStatus jobStatus = new JobStatus();
+            jobStatus.jobID = reportJob.JobID;
+            jobStatus.status = Status.Queued;
+
             Process process = new Process();
             process.StartInfo.FileName = ConfigurationManager.AppSettings["rptDynamoExe"];
             process.StartInfo.Arguments = "-c " + ConfigurationManager.AppSettings["rptDynamoExe"] + " -j " + jobFName;
@@ -28,7 +32,7 @@ namespace RptPutty.Services
             process.Start();
             process.Dispose();
 
-            return new JobStatus();
+            return jobStatus;
         }
     }
 }
