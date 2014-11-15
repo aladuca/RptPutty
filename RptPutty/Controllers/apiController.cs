@@ -38,11 +38,27 @@ namespace RptPutty.Controllers
     }
     public class statusController : ApiController
     {
+        private StatusTracker statusSvc;
+        public statusController()
+        {
+            this.statusSvc = new StatusTracker();
+        }
         // GET : /api/status.json
         // Used to get report generation statuses
-
+        public List<JobStatus> get()
+        {
+            return statusSvc.getAllJobs();
+        }
+        public JobStatus get(Guid id)
+        {
+            return statusSvc.getJob(id);
+        }
         // POST: /api/status.json
         // Used to post report generation statuses
+        public void post([FromBody] JobStatus job)
+        {
+            statusSvc.updateJob(job);
+        }
 
     }
     public class reportsController : ApiController

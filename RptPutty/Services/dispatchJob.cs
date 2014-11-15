@@ -21,8 +21,12 @@ namespace RptPutty.Services
             File.WriteAllText(jobFName, jss.Serialize(reportJob));
 
             JobStatus jobStatus = new JobStatus();
-            jobStatus.jobID = reportJob.JobID;
+            jobStatus.ID = reportJob.JobID;
+            jobStatus.filename = Path.GetFileName(reportJob.report.Filename);
             jobStatus.status = Status.Queued;
+
+            StatusTracker st = new StatusTracker();
+            st.newJob(jobStatus);
 
             Process process = new Process();
             process.StartInfo.FileName = ConfigurationManager.AppSettings["rptDynamoExe"];

@@ -7,7 +7,7 @@ namespace RptPutty.Models
 {
     public class JobStatus
     {
-        public Guid jobID { get; set; }
+        public Guid ID { get; set; }
         public Status status { get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
