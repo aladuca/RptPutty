@@ -69,7 +69,7 @@ namespace RptPutty.Services
 
                 if (odr.HasRows)
                 {
-                    do
+                    while (odr.Read())
                     {
                         JobStatus jStatus = new JobStatus();
                         jStatus.ID = odr.GetGuid(0);
@@ -81,7 +81,7 @@ namespace RptPutty.Services
                         if (!odr.IsDBNull(6)) { jStatus.start = odr.GetDateTime(6); } else { jStatus.start = DateTime.Parse("1753-01-01T00:00:00"); }
                         if (!odr.IsDBNull(7)) { jStatus.end = odr.GetDateTime(7); } else { jStatus.end = DateTime.Parse("1753-01-01T00:00:00"); }
                         jobs.Add(jStatus);
-                    } while (odr.Read());
+                    } 
                 }
 
             }
