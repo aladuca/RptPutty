@@ -33,7 +33,7 @@ namespace RptPutty.Controllers
         // Receieve report parameter inputs for use in generation
         public JobStatus post ([FromBody] ReportJob reportJob)
         {
-            return dispatcher.dispatch(reportJob);
+            return dispatcher.dispatch(reportJob, (User.Identity).Name);
         }
     }
     public class statusController : ApiController

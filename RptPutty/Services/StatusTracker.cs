@@ -18,6 +18,11 @@ namespace RptPutty.Services
                 ocomm.Parameters.Add(new OdbcParameter("id", job.ID));
                 ocomm.Parameters.Add(new OdbcParameter("status", "0"));
                 ocomm.Parameters.Add(new OdbcParameter("filename", job.filename));
+                if (job.requestor != "")
+                {
+                    ocomm.CommandText = "INSERT INTO JOB_STATUS (ID, STATUS_C, FILENAME, REQUESTOR) VALUES (?, ?, ?, ?)";
+                    ocomm.Parameters.Add(new OdbcParameter("requestor", job.requestor));
+                }
                 ocomm.Connection = oconn;
 
                 oconn.Open();

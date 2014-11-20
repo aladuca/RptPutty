@@ -12,7 +12,7 @@ namespace RptPutty.Services
 {
     public class dispatchJob
     {
-        public JobStatus dispatch(ReportJob reportJob)
+        public JobStatus dispatch(ReportJob reportJob, string user)
         {
             JavaScriptSerializer jss = new JavaScriptSerializer();
             reportJob.JobID = Guid.NewGuid();
@@ -24,13 +24,14 @@ namespace RptPutty.Services
             jobStatus.ID = reportJob.JobID;
             jobStatus.filename = Path.GetFileName(reportJob.report.Filename);
             jobStatus.status = Status.Queued;
+            jobStatus.requestor = user;
 
             StatusTracker st = new StatusTracker();
             st.newJob(jobStatus);
 
             Process process = new Process();
             process.StartInfo.FileName = ConfigurationManager.AppSettings["rptDynamoExe"];
-            process.StartInfo.Arguments = "-c " + ConfigurationManager.AppSettings["rptDynamoExe"] + " -j " + jobFName;
+            process.StartInfo.Arguments = "-c \"" + ConfigurationManager.AppSettings["rptDynamoConfig"] + "\" -j \"" + jobFName + "\"";
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.UseShellExecute = false;
             process.Start();
