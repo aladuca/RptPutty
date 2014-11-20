@@ -51,14 +51,26 @@ namespace RptPutty.Models
     {
         public Parameters()
         {
-            DiscreteValues = new Dictionary<string, string>();
+            DiscreteValues = new List<Option>();
             SelectedValues = new List<string>();
         }
         public string Name { get; set; }
         public bool MultipleSelect { get; set; }
-        public Dictionary<string, string> DiscreteValues { get; set; }
+        public bool AllowCustomValues { get; set; }
+        public List<Option> DiscreteValues { get; set; }
         public string DefaultValue { get; set; }
         public List<string> SelectedValues { get; set; }
+    }
+    public class Option
+    {
+        public Option() { }
+        public Option(string val, string desc)
+        {
+            this.Value = val;
+            this.Description = desc;
+        }
+        public string Value { get; set; }
+        public string Description { get; set; }
     }
     public enum Output
     {

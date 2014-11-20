@@ -36,13 +36,19 @@ namespace RptPutty.Services
                 {
                     param.Name = prm.Name;
                     param.MultipleSelect = prm.EnableAllowMultipleValue;
-                    //param.DiscreteValues = new Dictionary<string, string>();
-
+                    param.AllowCustomValues = rptDoc.ParameterFields[prm.Name, prm.ReportName].AllowCustomValues;
                     ParameterValues crpvs = prm.DefaultValues;
                     foreach (ParameterValue crpv in crpvs)
                     {
                         ParameterDiscreteValue crpdv = (ParameterDiscreteValue)crpv;
-                        param.DiscreteValues.Add(crpdv.Value.ToString(), crpdv.Description);
+                        if (crpdv.Description != null)
+                        {
+                            param.DiscreteValues.Add(new Option(crpdv.Value.ToString(), crpdv.Description));
+                        }
+                        else
+                        {
+                            param.DiscreteValues.Add(new Option(crpdv.Value.ToString(), crpdv.Value.ToString()));
+                        }
                     }
                 }
                 rptDef.Parameters.Add(param);
