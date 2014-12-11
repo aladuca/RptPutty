@@ -67,5 +67,18 @@ namespace RptPutty.Services
             rptDoc.Dispose();
             return rptDef;
         }
+        public Listing getSummary(Listing rpt)
+        {
+            ReportDocument rptDoc = new ReportDocument();
+            try { rptDoc.Load(ConfigurationManager.AppSettings["searchPath"] + rpt.Filename); }
+            catch { return rpt; }
+            rpt.Title = rptDoc.SummaryInfo.ReportTitle;
+            rpt.Comments = rptDoc.SummaryInfo.ReportComments;
+
+            rptDoc.Close();
+            rptDoc.Dispose();
+            return rpt;
+
+        }
     }
 }

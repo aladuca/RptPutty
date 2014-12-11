@@ -63,9 +63,20 @@ namespace RptPutty.Controllers
     }
     public class reportsController : ApiController
     {
+        private ReportListing svcListing;
+        public reportsController()
+        {
+            this.svcListing = new ReportListing();
+        }
         // GET: /api/reports.json
-        // Used to get listing of all available reports
-
+        public List<Listing> get()
+        {
+            return svcListing.getAllJobs(User.Identity.Name);
+        }
+        public List<Listing> get(string id)
+        {
+            return svcListing.getAllJobs(id);
+        }
         // POST: /api/reports.json
     }
 
