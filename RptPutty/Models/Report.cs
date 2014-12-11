@@ -8,43 +8,36 @@ namespace RptPutty.Models
     public class ReportJob
     {
         public Guid JobID { get; set; }
-        public ReportSubmit report { get; set; }
+        public Report report { get; set; }
         public Email email { get; set; }
     }
     // Base Report Class Definition
     public class Report
     {
-        public string Filename { get; set; }
-        public List<Parameters> Parameters { get; set; }
-    }
-    // Report Class Definition used to present form
-    public class ReportForm : Report
-    {
-        public ReportForm()
+        public Report()
         {
             Parameters = new List<Parameters>();
-            Output = new Dictionary<int, string>();
-            Output.Add(0, "NoFormat");
-            Output.Add(1, "CrystalReport");
-            Output.Add(2, "RichText");
-            Output.Add(3, "WordForWindows");
-            Output.Add(4, "Excel");
-            Output.Add(5, "PortableDocFormat");
-            Output.Add(6, "HTML32");
-            Output.Add(7, "HTML40");
-            Output.Add(8, "ExcelRecord");
-            Output.Add(9, "Text");
-            Output.Add(10, "CharacterSeparatedValues");
-            Output.Add(11, "TabSeperatedText");
-            Output.Add(12, "EditableRTF");
-            Output.Add(13, "Xml");
-            Output.Add(14, "RPTR");
-            Output.Add(15, "ExcelWorkbook");
+            Output = new List<Option>();
+            Output.Add(new Option("0", "NoFormat"));
+            Output.Add(new Option("1", "CrystalReport"));
+            Output.Add(new Option("2", "RichText"));
+            Output.Add(new Option("3", "WordForWindows"));
+            Output.Add(new Option("4", "Excel"));
+            Output.Add(new Option("5", "PortableDocFormat"));
+            Output.Add(new Option("6", "HTML32"));
+            Output.Add(new Option("7", "HTML40"));
+            Output.Add(new Option("8", "ExcelRecord"));
+            Output.Add(new Option("9", "Text"));
+            Output.Add(new Option("10", "CharacterSeparatedValues"));
+            Output.Add(new Option("11", "TabSeperatedText"));
+            Output.Add(new Option("12", "EditableRTF"));
+            Output.Add(new Option("13", "Xml"));
+            Output.Add(new Option("13", "RPTR"));
+            Output.Add(new Option("13", "ExcelWorkbook"));
         }
-        public Dictionary<int, string> Output { get; set; }
-    }
-    public class ReportSubmit : Report
-    {
+        public string Filename { get; set; }
+        public List<Parameters> Parameters { get; set; }
+        public List<Option> Output { get; set; }
         public Output SelectedOutput { get; set; }
     }
     public class Parameters

@@ -13,22 +13,31 @@ namespace RptPutty.Services
 {
     public class enumReport
     {
-        public ReportForm RunDefinition()
+        public Report RunDefinition()
         {
             return RunDefinition(ConfigurationManager.AppSettings["defaultReport"]);
             
         }
-        public ReportForm RunDefinition(string filename)
+        public Report RunDefinition(string filename)
         {
-            ReportForm rptDef = new ReportForm();
+            Report rptDef = new Report();
             rptDef.Filename = ConfigurationManager.AppSettings["searchPath"] + filename;
-            //rptDef.Parameters = new List<Parameters>();
 
             ReportDocument rptDoc = new ReportDocument();
 
             try { rptDoc.Load(rptDef.Filename); }
             catch { return null; }
 
+            Dictionary<string, string> defaultvals = new Dictionary<string, string>();
+            foreach (ISCRParameterField prms in rptDoc.ReportClientDocument.DataDefinition.ParameterFields)
+            {
+                ISCRValues vals = prms.InitialValues;
+
+                foreach (ParameterFieldDiscreteValue val in vals)
+                {
+                    defaultvals.Add(prms.Name, val.Value);
+                }
+            }
             foreach (ParameterFieldDefinition prm in rptDoc.DataDefinition.ParameterFields)
             {
                 Parameters param = new Parameters();
@@ -37,6 +46,7 @@ namespace RptPutty.Services
                     param.Name = prm.Name;
                     param.MultipleSelect = prm.EnableAllowMultipleValue;
                     param.AllowCustomValues = rptDoc.ParameterFields[prm.Name, prm.ReportName].AllowCustomValues;
+                    param.DefaultValue = defaultvals[prm.Name];
                     ParameterValues crpvs = prm.DefaultValues;
                     foreach (ParameterValue crpv in crpvs)
                     {
@@ -53,7 +63,8 @@ namespace RptPutty.Services
                 }
                 rptDef.Parameters.Add(param);
             }
-
+            rptDoc.Close();
+            rptDoc.Dispose();
             return rptDef;
         }
     }

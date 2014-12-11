@@ -20,11 +20,11 @@ namespace RptPutty.Controllers
         }
         // GET : /api/generator.json
         // Used to get JSON object of report parameters for generation
-        public ReportForm get()
+        public Report get()
         {
             return enumRpt.RunDefinition();
         }
-        public ReportForm get(string filename)
+        public Report get(string filename)
         {
             return enumRpt.RunDefinition(filename);
         }
