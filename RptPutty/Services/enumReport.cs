@@ -44,6 +44,7 @@ namespace RptPutty.Services
                 if (!prm.IsLinked() && !prm.ParameterFieldUsage2.ToString().Equals("NotInUse"))
                 {
                     param.Name = prm.Name;
+                    param.PromptText = prm.PromptText;
                     param.MultipleSelect = prm.EnableAllowMultipleValue;
                     param.AllowCustomValues = rptDoc.ParameterFields[prm.Name, prm.ReportName].AllowCustomValues;
                     param.DefaultValue = defaultvals[prm.Name];

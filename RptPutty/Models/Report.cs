@@ -53,6 +53,7 @@ namespace RptPutty.Models
         public List<Option> DiscreteValues { get; set; }
         public string DefaultValue { get; set; }
         public List<string> SelectedValues { get; set; }
+        public string PromptText { get; set; }
     }
     public class Option
     {
