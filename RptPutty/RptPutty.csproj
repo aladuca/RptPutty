@@ -171,6 +171,7 @@
     <None Include="Views\Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Views\web\Index.cshtml" />
     <Content Include="Views\web\generator.cshtml">
       <SubType>Code</SubType>
     </Content>
