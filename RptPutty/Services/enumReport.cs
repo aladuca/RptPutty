@@ -35,6 +35,7 @@ namespace RptPutty.Services
 
                 foreach (ParameterFieldDiscreteValue val in vals)
                 {
+                    if (!String.IsNullOrEmpty(val.Value))
                     defaultvals.Add(prms.Name, val.Value);
                 }
             }
@@ -47,7 +48,7 @@ namespace RptPutty.Services
                     param.PromptText = prm.PromptText;
                     param.MultipleSelect = prm.EnableAllowMultipleValue;
                     param.AllowCustomValues = rptDoc.ParameterFields[prm.Name, prm.ReportName].AllowCustomValues;
-                    param.DefaultValue = defaultvals[prm.Name];
+                    if (defaultvals.ContainsKey(prm.Name)) { param.DefaultValue = defaultvals[prm.Name]; }
                     ParameterValues crpvs = prm.DefaultValues;
                     foreach (ParameterValue crpv in crpvs)
                     {
