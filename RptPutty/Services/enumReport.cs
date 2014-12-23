@@ -61,8 +61,8 @@ namespace RptPutty.Services
                             param.DiscreteValues.Add(new Option(crpdv.Value.ToString(), crpdv.Value.ToString()));
                         }
                     }
+                    rptDef.Parameters.Add(param);
                 }
-                rptDef.Parameters.Add(param);
             }
             rptDoc.Close();
             rptDoc.Dispose();
