@@ -1,13 +1,12 @@
-﻿@model RptPutty.Models.Listing
+﻿@model List<RptPutty.Models.Listing>
 
 @{
     ViewBag.Title = "reports";
-    Layout = "~/Views/web/Index.cshtml";
 }
 
 <h2>reports</h2>
 <ul>
-@foreach (var report in Model)
+@foreach (var report in @Model)
 {
     <li><a href="~/web/generator/@report.Filename">@report.Title</a></li>
 }
