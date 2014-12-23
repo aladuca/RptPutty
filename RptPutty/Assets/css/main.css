@@ -1,0 +1,64 @@
+﻿body
+{
+    background-color:#ABBDAB;
+}
+div {
+    position: relative;
+}
+div.parameter {
+    background-color: #E4E4EC;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 2px solid;
+    clear: both;
+    width: 790px;
+    overflow: auto;
+}
+select.parameter{
+    width: 300px;
+}
+div.paramleft {
+    float: left;
+    width: 335px;
+    clear:both;
+    margin: 5px;
+}
+div.paramcenter{
+    float:right;
+    width: 35px;
+}
+div.paramright {
+    float: left;
+    width: 300px;
+    margin: 5px;
+}
+p{
+    margin: 0px;
+    font-size: small;
+}
+p.left {
+    float:left;
+    width: 500px;
+    font-size:initial;
+}
+p.right {
+    float: right;
+    font-size:initial;
+}
+input.text-input{
+    width: 300px;
+}
+input.remove-button{
+	float: right;
+}
+hr {
+    clear: both;
+}
+input.multi-select{
+    margin-left: 7px;
+    margin-top:8px;
+    letter-spacing: -2px;
+}
+input.select-button{
+    width: 25px;
+}
