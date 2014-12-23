@@ -175,6 +175,7 @@
     <Content Include="Views\web\generator.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\web\reports.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
