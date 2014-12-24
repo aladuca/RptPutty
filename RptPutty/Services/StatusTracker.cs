@@ -15,7 +15,7 @@ namespace RptPutty.Services
             using (OdbcConnection oconn = new OdbcConnection(ConfigurationManager.ConnectionStrings["StatusTracker"].ConnectionString))
             {
                 OdbcCommand ocomm = new OdbcCommand("INSERT INTO JOB_STATUS (ID, STATUS_C, FILENAME) VALUES (?, ?, ?)");
-                ocomm.Parameters.Add(new OdbcParameter("id", job.ID));
+                ocomm.Parameters.Add(new OdbcParameter("id", job.ID.ToString()));
                 ocomm.Parameters.Add(new OdbcParameter("status", "0"));
                 ocomm.Parameters.Add(new OdbcParameter("filename", job.filename));
                 if (job.requestor != "")
@@ -46,7 +46,7 @@ namespace RptPutty.Services
 
                 if (odr.HasRows)
                 {
-                    jStatus.ID = odr.GetGuid(0);
+                    jStatus.ID = Guid.Parse(odr.GetString(0));
                     jStatus.status = (Status)Enum.Parse(typeof(Status), odr.GetString(1));
                     jStatus.filename = odr.GetString(2);
                     if (!odr.IsDBNull(3)) { jStatus.requestor = odr.GetString(3); } else { jStatus.requestor = null; }
@@ -77,7 +77,7 @@ namespace RptPutty.Services
                     while (odr.Read())
                     {
                         JobStatus jStatus = new JobStatus();
-                        jStatus.ID = odr.GetGuid(0);
+                        jStatus.ID = Guid.Parse(odr.GetString(0));
                         jStatus.status = (Status)Enum.Parse(typeof(Status), odr.GetString(1));
                         jStatus.filename = odr.GetString(2);
                         if (!odr.IsDBNull(3)) { jStatus.requestor = odr.GetString(3); } else { jStatus.requestor = null; }
@@ -102,7 +102,7 @@ namespace RptPutty.Services
                 ocomm.Parameters.Add(new OdbcParameter("pid", job.processID));
                 ocomm.Parameters.Add(new OdbcParameter("stime", job.start));
                 ocomm.Parameters.Add(new OdbcParameter("etime", job.end));
-                ocomm.Parameters.Add(new OdbcParameter("id", job.ID));
+                ocomm.Parameters.Add(new OdbcParameter("id", job.ID.ToString()));
                 ocomm.Connection = oconn;
 
                 oconn.Open();
