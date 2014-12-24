@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.IO;
 using RptPutty.Models;
 using System.Configuration;
 
@@ -16,18 +17,25 @@ namespace RptPutty.Services
         public Report RunDefinition()
         {
             return RunDefinition(ConfigurationManager.AppSettings["defaultReport"]);
-            
+
         }
         public Report RunDefinition(string filename)
         {
             Report rptDef = new Report();
             rptDef.Filename = ConfigurationManager.AppSettings["searchPath"] + filename;
+            
 
             ReportDocument rptDoc = new ReportDocument();
 
             try { rptDoc.Load(rptDef.Filename); }
             catch { return null; }
 
+            if (!String.IsNullOrEmpty(rptDoc.SummaryInfo.ReportTitle))
+                rptDef.Title = rptDoc.SummaryInfo.ReportTitle;
+            else
+                rptDef.Title = Path.GetFileName(rptDef.Filename);
+
+            // Populate Default Parameter Values
             Dictionary<string, string> defaultvals = new Dictionary<string, string>();
             foreach (ISCRParameterField prms in rptDoc.ReportClientDocument.DataDefinition.ParameterFields)
             {
@@ -35,10 +43,11 @@ namespace RptPutty.Services
 
                 foreach (ParameterFieldDiscreteValue val in vals)
                 {
-                    if (!String.IsNullOrEmpty(val.Value))
-                    defaultvals.Add(prms.Name, val.Value);
+                    if (!String.IsNullOrEmpty(val.Value.ToString()))
+                        defaultvals.Add(prms.Name, val.Value.ToString());
                 }
             }
+            // Populate Parameter Details
             foreach (ParameterFieldDefinition prm in rptDoc.DataDefinition.ParameterFields)
             {
                 Parameters param = new Parameters();

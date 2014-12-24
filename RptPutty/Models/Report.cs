@@ -36,6 +36,7 @@ namespace RptPutty.Models
             Output.Add(new Option("13", "ExcelWorkbook"));
         }
         public string Filename { get; set; }
+        public string Title { get; set; }
         public List<Parameters> Parameters { get; set; }
         public List<Option> Output { get; set; }
         public Output SelectedOutput { get; set; }

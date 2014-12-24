@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Godzilla Rises</title>
+    <title>Report Generator</title>
     <link href="@Url.Content("~/Assets/css/main.css")" rel="stylesheet" type="text/css" media="all" />
 </head>
 <body>
@@ -182,7 +182,7 @@
             }); //End of function #submit button handleing
         }); //End of function document ready
     </script>
-    <h2>generator</h2>
+    <h2>@Model.Title</h2>
     @foreach (var parameter in Model.Parameters)
     {
         var divclassstr = new List<string>();
@@ -239,6 +239,7 @@
 
         </div>
     }
+    <strong>Output Format:</strong>
     <select id="output-format">
         @foreach (var option in Model.Output)
         {
@@ -253,7 +254,8 @@
 
         }
     </select>
-    <input type="text" id="email" />
-    <input type="button" id="submit" value="submit" />
+    <strong>E-Mail:</strong>
+    <input type="text" id="email" /><br />
+    <input type="button" id="submit" value="Submit" />
 </body>
 </html>
