@@ -27,7 +27,8 @@ namespace RptPutty.Services
             jobStatus.requestor = user;
 
             StatusTracker st = new StatusTracker();
-            st.newJob(jobStatus);
+            try { st.newJob(jobStatus); }
+            catch { }
 
             Process process = new Process();
             process.StartInfo.FileName = ConfigurationManager.AppSettings["rptDynamoExe"];
