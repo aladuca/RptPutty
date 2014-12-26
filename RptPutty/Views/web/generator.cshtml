@@ -155,7 +155,7 @@
                 }); //end of each div.parameter
 
                 model.SelectedOutput = $("#output-format").val();
-                var reportJob =  {
+                var reportJob = {
                     "report": model,
                     "email": {
                         "to": [],
@@ -198,20 +198,23 @@
             <p class="left">@parameter.PromptText</p><p class="right">@parameter.Name</p>
             <hr />
             <div class="paramleft">
-                <select multiple=@parameter.MultipleSelect class="parameter discrete">
-                    @foreach (var option in parameter.DiscreteValues)
-                    {
-                        if (parameter.DefaultValue == option.Value)
+                @if (@parameter.DiscreteValues.Count > 0)
+                {
+                    <select multiple=@parameter.MultipleSelect class="parameter discrete">
+                        @foreach (var option in parameter.DiscreteValues)
                         {
-                            <option value="@option.Value" selected="selected" class="default-value">@option.Description</option>
-                        }
-                        else
-                        {
-                            <option value="@option.Value">@option.Description</option>
-                        }
+                            if (parameter.DefaultValue == option.Value)
+                            {
+                                <option value="@option.Value" selected="selected" class="default-value">@option.Description</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Value">@option.Description</option>
+                            }
 
-                    }
-                </select>
+                        }
+                    </select>
+                }
                 @if (parameter.MultipleSelect)
                 {
                     <div class="paramcenter">
