@@ -19,9 +19,11 @@
             //Onload move default options to selected
             $("div.multiple").each(function () {
                 var defoption = $(this).find('select.discrete > option.default-value');
-                defoption.removeAttr("selected");
-                var selectbox = $(this).find('select.select-box');
-                selectbox.append($('<option>', { value: defoption.val() }).text(defoption.text()));
+                if (defoption.length != 0) {
+                    defoption.removeAttr("selected");
+                    var selectbox = $(this).find('select.select-box');
+                    selectbox.append($('<option>', { value: defoption.val() }).text(defoption.text()));
+                }
             }); //End of each div.parameter
 
             //On change dropdown handler
