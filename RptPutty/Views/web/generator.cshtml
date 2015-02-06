@@ -69,8 +69,8 @@
                             duplicated = true;
                         }
                     });
-                    if (!duplicated && $(parameter).find('input:text').val().trim() != "") {
-                        valselection(parameter, $(parameter).find('input:text').val().trim(), "Custom - " + $(parameter).find('input:text').val());
+                    if (!duplicated && $.trim($(parameter).find('input:text').val()) != "") {
+                        valselection(parameter, $.trim($(parameter).find('input:text').val()), "Custom - " + $(parameter).find('input:text').val());
                         $(parameter).find('input:text').val("");
                     }
                 }
@@ -114,12 +114,12 @@
                     var noinput = null;
                     if ($(this).hasClass("single")) {
                         if ($(this).hasClass("custom")) {
-                            if ($(this).find('input').val().trim() == "") {
+                            if ($.trim($(this).find('input').val()) == "") {
                                 noinput = true;
                                 validation = false;
                             }
                             else {
-                                paramValues.push($(this).find('input').val().trim())
+                                paramValues.push($.trim($(this).find('input').val()))
                                 noinput = false;
                             }
                         }
