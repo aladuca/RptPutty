@@ -95,7 +95,7 @@
                 var valuesselected = $(parameter).find('select.select-box > option:selected').length;
                 $(parameter).find('select.select-box > option').each(function () {
                     if ($(this).is(':selected') || all) {
-                        if ($(this).text().contains("Custom") && !all && valuesselected == 1) {
+                        if ($(this).text().indexOf("Custom") >!== 1 && !all && valuesselected == 1) {
                             $(parameter).find('input:text').val($(this).val());
                         }
                         $(this).remove();
