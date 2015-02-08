@@ -5,9 +5,9 @@
 }
 
 <h2>reports</h2>
-<ul>
-@foreach (var report in @Model)
-{
-    <li><a href="~/web/generator/@report.Filename">@report.Title</a></li>
-}
+<ul class="list-unstyled">
+    @foreach (var report in @Model)
+    {
+        <li><a href="~/web/generator/@report.Filename">@report.Title</a></li>
+    }
 </ul>
