@@ -71,11 +71,11 @@ namespace RptPutty.Controllers
         // GET: /api/reports.json
         public List<Listing> get()
         {
-            return svcListing.getAllJobs(User.Identity.Name);
+            return svcListing.getAllReports(User.Identity.Name);
         }
         public List<Listing> get(string id)
         {
-            return svcListing.getAllJobs(id);
+            return svcListing.getAllReports(id);
         }
         // POST: /api/reports.json
     }

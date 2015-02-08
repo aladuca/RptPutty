@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Data.Odbc;
 using RptPutty.Models;
+using RptPutty.Services;
 using System.Configuration;
 
 namespace RptPutty.Services
 {
     public class ReportListing
     {
-        public List<Listing> getAllJobs(string username)
+        public List<Listing> getAllReports(string username)
         {
             List<Listing> list = new List<Listing>();
             using (OdbcConnection oconn = new OdbcConnection(ConfigurationManager.ConnectionStrings["UserAccess"].ConnectionString))
