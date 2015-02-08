@@ -1,189 +1,180 @@
 ﻿@model RptPutty.Models.Report
 
 @{
-    ViewBag.Title = "generator";
+    ViewBag.Title = "Report Generator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Report Generator</title>
-    <link href="@Url.Content("~/Assets/css/main.css")" rel="stylesheet" type="text/css" media="all" />
-</head>
-<body>
-    <script src="@Url.Content("~/Assets/js/libs/jquery-1.11.1.min.js")"></script>
-    <script src="@Url.Content("~/Assets/js/libs/json3.min.js")"></script>
-    <script type="text/javascript">
-        var model = @Html.Raw(Json.Encode(@Model))
 
-        $("document").ready(function () {
-            //Onload move default options to selected
-            $("div.multiple").each(function () {
-                var defoption = $(this).find('select.discrete > option.default-value');
-                if (defoption.length != 0) {
-                    defoption.removeAttr("selected");
-                    var selectbox = $(this).find('select.select-box');
-                    selectbox.append($('<option>', { value: defoption.val() }).text(defoption.text()));
-                }
-            }); //End of each div.parameter
+<script type="text/javascript">
+    var model = @Html.Raw(Json.Encode(@Model))
 
-            //On change dropdown handler
-            $("select.parameter.discrete").change(function () {
-                var parameter = $(this).parents("div.parameter");
-                if ($(parameter).hasClass("custom") && !$(this).attr('multiple')) {
-                    $(parameter).find('input:text').val($(this).val());
-                }
-            }); //End of change dropdown handler
-            //Text input change handler
-            $("input.text-input").on("keyup", function () {
-                var parameter = $(this).parents("div.parameter");
-                if ($(parameter).hasClass("custom") && !$(this).attr('multiple')) {
-                    if ($(parameter).find("select.parameter.discrete > option:contains(-- User Input --)").length == 0) {
-                        $(parameter).find("select.parameter.discrete").append($("<option>", { value: $(this).val() }).text("-- User Input --"));
-                        $(parameter).find("select.parameter.discrete").val($(this).val());
-                    }
-                    else {
-                        $(parameter).find("select.parameter.discrete > option:contains(-- User Input --)").val($(this).val())
-                        $(parameter).find("select.parameter.discrete").val($(this).val());
-                    }
-                }
-            }); //End of text input change handler
-            //Selection button handler
-            $('input.select-button').click(function () {
-                var parameter = $(this).parents("div.parameter");
-                if ($(this).hasClass('one')) {
-                    $(parameter).find('select.discrete > option:selected').each(function () {
-                        valselection(parameter, $(this).val(), $(this).text());
-                    }); //End of Selected Parameters
-                }
-                else if ($(this).hasClass('all')) {
-                    $(parameter).find('select.discrete > option').each(function () {
-                        valselection(parameter, $(this).val(), $(this).text());
-                    }); //End of Selected Parameters
-                }
-                else if ($(this).hasClass('custom')) {
-                    var duplicated = false;
-                    $(parameter).find('select.discrete > option').each(function () {
-                        if ($(this).val() == $(parameter).find('input:text').val()) {
-                            alert("Duplicated: Adding \x22" + $(this).text() + "\x22");
-                            valselection(parameter, $(this).val(), $(this).text());
-                            duplicated = true;
-                        }
-                    });
-                    if (!duplicated && $.trim($(parameter).find('input:text').val()) != "") {
-                        valselection(parameter, $.trim($(parameter).find('input:text').val()), "Custom - " + $(parameter).find('input:text').val());
-                        $(parameter).find('input:text').val("");
-                    }
-                }
-            }); //End of select button
-            //Verify if value is already in select box (if not add)
-            function valselection(parameter, value, text) {
-                var duplicated = false;
-                $(parameter).find('select.select-box > option').each(function () {
-                    if ($(this).val() == value) {
-                        duplicated = true;
-                    }
-                });
-                if (!duplicated) {
-                    $(parameter).find('select.select-box').append($('<option>', { value: value }).text(text));
-                }
-                return;
+    $("document").ready(function () {
+        //Onload move default options to selected
+        $("select.parameter-selection").each(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            var defaultOption = $(parameterRoot).find('select.parameter-discrete > option.parameter-default-value');
+            if (defaultOption.length != 0) {
+                $(this).append($('<option>', { value: defaultOption.val() }).text(defaultOption.text()));
             }
-            //Remove selected values
-            $('input.remove-button').click(function () {
-                var parameter = $(this).parents("div.parameter");
-                var all = $(this).hasClass("all");
-                var valuesselected = $(parameter).find('select.select-box > option:selected').length;
-                $(parameter).find('select.select-box > option').each(function () {
-                    if ($(this).is(':selected') || all) {
-                        if ($(this).text().indexOf("Custom") >!== 1 && !all && valuesselected == 1) {
-                            $(parameter).find('input:text').val($(this).val());
-                        }
-                        $(this).remove();
-                    }
-                });
-            }); //End remove selected values
+        }); //End of each div.parameter
+
+        //On change dropdown handler
+        $("select.parameter-discrete").change(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            if (!$(parameterRoot).find('select.parameter-selection').length) {
+                //if ($(parameter).hasClass("custom") && !$(this).attr('multiple')) {
+                $(parameterRoot).find('input:text').val($(this).val());
+                //}
+            }
+        }); //End of change dropdown handler
+        //Text input change handler
+        $("input.parameter-custom").on("keyup", function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            if (!$(parameterRoot).find('select.parameter-selection').length) {
+                if ($(parameterRoot).find("select.parameter-discrete > option:contains(-- User Input --)").length == 0) {
+                    $(parameterRoot).find("select.parameter-discrete").append($("<option>", { value: $(this).val() }).text("-- User Input --"));
+                    $(parameterRoot).find("select.parameter-discrete").val($(this).val());
+                }
+                else {
+                    $(parameterRoot).find("select.parameter-discrete > option:contains(-- User Input --)").val($(this).val())
+                    $(parameterRoot).find("select.parameter-discrete").val($(this).val());
+                }
+            }
+        }); //End of text input change handler
+        //Selection button handler
+        $('button.parameter-select').click(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            $(parameterRoot).find('select.parameter-discrete > option:selected').each(function () {
+                valselection(parameterRoot, $(this).val(), $(this).text());
+            }); //End of Selected Parameters
+        });
+        $('button.parameter-selectall').click(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            $(parameterRoot).find('select.parameter-discrete > option').each(function () {
+                valselection(parameterRoot, $(this).val(), $(this).text());
+            }); //End of Selected Parameters
+        });
+        $('button.parameter-selectcustom').click(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            var duplicated = false;
+            var inputText = $.trim($(parameterRoot).find('input:text').val());
+            $(parameterRoot).find('select.parameter-discrete > option').each(function () {
+                if ($(this).val() == inputText) {
+                    alert("Duplicated: Adding \x22" + $(this).text() + "\x22");
+                    valselection(parameterRoot, $(this).val(), $(this).text());
+                    duplicated = true;
+                }
+            });
+            if (!duplicated && inputText != "") {
+                valselection(parameterRoot, inputText, "Custom - " + inputText);
+                $(parameterRoot).find('input:text').val("");
+            }
+
+        }); //End of select button
+        //Verify if value is already in select box (if not add)
+        function valselection(parameter, value, text) {
+            var duplicated = false;
+            $(parameter).find('select.parameter-selection > option').each(function () {
+                if ($(this).val() == value) {
+                    duplicated = true;
+                }
+            });
+            if (!duplicated) {
+                $(parameter).find('select.parameter-selection').append($('<option>', { value: value }).text(text));
+            }
+            return;
+        }
+        //Remove selected values
+        $('button.parameter-removeall').click(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            $(parameterRoot).find('select.parameter-selection > option').each(function () {
+                $(this).remove();
+            });
+        });
+        $('button.parameter-remove').click(function () {
+            var parameterRoot = $(this).parents("div.parameter-root");
+            $(parameterRoot).find('select.parameter-selection > option:selected').each(function () {
+                $(this).remove();
+            });
+        }); //End remove selected values
 
 
-            //Submit button handler
-            $("#submit").click(function () {
-                var validation = true;
-                //Populate Data Structure
-                $("div.parameter").each(function () {
-                    var paramName = $(this).find("p.right").text();
-                    var paramValues = new Array();
-                    var noinput = null;
-                    if ($(this).hasClass("single")) {
-                        if ($(this).hasClass("custom")) {
-                            if ($.trim($(this).find('input').val()) == "") {
-                                noinput = true;
-                                validation = false;
-                            }
-                            else {
-                                paramValues.push($.trim($(this).find('input').val()))
-                                noinput = false;
-                            }
-                        }
-                        else {
-                            paramValues.push($(this).find('select').val());
-                        }
+        //Submit button handler
+        $("button.report-submit").click(function () {
+            var validation = true;
+            //Populate Data Structure
+            $("div.parameter-root").each(function () {
+                var paramName = $(this).find("div.parameter-name").text();
+                var paramValues = new Array();
+                var noinput = true;
+                if ($(this).find('select.parameter-selection').length) {
+                    //Parameters that allow multiple selections
+                    if ($(this).find('select.parameter-selection > option').length) {
+                        $(this).find('select.parameter-selection > option').each(function () {
+                            paramValues.push($(this).val());
+                        }); //End of each selected option
+                        noinput = false;
                     }
-                    else if ($(this).hasClass("multiple")) {
-                        if ($(this).find('select.select-box > option').length == 0) {
-                            noinput = true;
-                            validation = false;
-                        }
-                        else {
-                            $(this).find('select.select-box > option').each(function () {
-                                paramValues.push($(this).val());
-                            }); //End of each selected option
-                            noinput = false;
-                        }
+                }
+                else {
+                    //Parameters that allow single selections
+                    if ($(this).find('select').val() != "") {
+                        paramValues.push($(this).find('select').val());
+                        noinput = false;
                     }
-
-                    //Change color of div if no input is detected
-                    if (noinput) {
-                        $(this).css({ "border": "2px solid red" });
-                    }
-                    else {
-                        $(this).removeAttr("style");
-                        for (var i = 0; i < model.Parameters.length; i++) {
-                            if (model.Parameters[i].Name == paramName) {
-                                model.Parameters[i].SelectedValues = paramValues;
-                            }
-                        }
-                    }
-                }); //end of each div.parameter
-
-                model.SelectedOutput = $("#output-format").val();
-                var reportJob = {
-                    "report": model,
-                    "email": {
-                        "to": [],
-                        "cc": []
-                    }
-                };
-                if (!validation) { alert("Missing Input"); }
-                if ($("#email").val() == "") {
-                    alert("Missing Email");
+                }
+                //Change color of div if no input is detected
+                if (noinput) {
+                    $(this).addClass("panel-danger");
+                    $(this).removeClass("panel-default");
                     validation = false;
                 }
                 else {
-                    reportJob.email.to.push($("#email").val());
+                    $(this).addClass("panel-default");
+                    $(this).removeClass("panel-danger");
+
+                    //Add Values to data model
+                    for (var i = 0; i < model.Parameters.length; i++) {
+                        if (model.Parameters[i].Name == paramName) {
+                            model.Parameters[i].SelectedValues = paramValues;
+                        }
+                    }
                 }
-                if (validation) {
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        url: "@Url.Content("~/api/generator")",
-                        data: JSON.stringify(reportJob),
-                        success: alert("Report Submitted"),
-                        error: function () { alert("Report Failed to Submit"); }
-                    }); //End of function .ajax
-                } //End if validation
-            }); //End of function #submit button handleing
-        }); //End of function document ready
-    </script>
+            }); //end of each div.parameter
+
+            model.SelectedOutput = $("#output-format").val();
+            var reportJob = {
+                "report": model,
+                "email": {
+                    "to": [],
+                    "cc": []
+                }
+            };
+            if (!validation) { alert("Missing Input"); }
+            if ($("#email").val() == "") {
+                alert("Missing Email");
+                validation = false;
+            }
+            else {
+                reportJob.email.to.push($("#email").val());
+            }
+            if (validation) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    url: "@Url.Content("~/api/generator")",
+                    data: JSON.stringify(reportJob),
+                    success: function () {
+                        alert("Report Submitted");
+                    },
+                    error: function () { alert("Report Failed to Submit"); }
+                }); //End of function .ajax
+            } //End if validation
+        }); //End of function #submit button handleing
+    }); //End of function document ready
+</script>
+<div class="col-lg-9">
     <h2>@Model.Title</h2>
     @foreach (var parameter in Model.Parameters)
     {
@@ -194,73 +185,95 @@
         if (parameter.AllowCustomValues) { divclassstr.Add("custom"); }
         var clsstr = String.Join(" ", divclassstr);
 
-        <div class="@clsstr">
-            <p class="left">@parameter.PromptText</p><p class="right">@parameter.Name</p>
-            <hr />
-            <div class="paramleft">
-                @if (@parameter.DiscreteValues.Count > 0)
-                {
-                    <select multiple=@parameter.MultipleSelect class="parameter discrete">
-                        @foreach (var option in parameter.DiscreteValues)
-                        {
-                            if (parameter.DefaultValue == option.Value)
+        <div class="panel panel-default parameter-root">
+            <div class="panel-heading container-fluid">
+                <div class="col-lg-7 pull-left">@parameter.PromptText</div>
+                <div class="col-lg-4 pull-right parameter-name text-right">@parameter.Name</div>
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-5">
+                    @if (@parameter.DiscreteValues.Count > 0)
+                    {
+                        <select multiple=@parameter.MultipleSelect class="form-control parameter-discrete">
+                            @foreach (var option in parameter.DiscreteValues)
                             {
-                                <option value="@option.Value" selected="selected" class="default-value">@option.Description</option>
-                            }
-                            else
-                            {
-                                <option value="@option.Value">@option.Description</option>
-                            }
+                                if (parameter.DefaultValue == option.Value)
+                                {
+                                    <option value="@option.Value" class="parameter-default-value">@option.Description</option>
+                                }
+                                else
+                                {
+                                    <option value="@option.Value">@option.Description</option>
+                                }
 
-                        }
-                    </select>
-                }
+                            }
+                        </select>
+                    }
+                    @if (parameter.AllowCustomValues)
+                    {
+                        <span>Enter a Value:</span>
+                        <div class="@(parameter.MultipleSelect ? "input-group" : "form-group")">
+                            <input type="text" class="form-control parameter-custom" value="@parameter.DefaultValue" />
+                            @if (parameter.MultipleSelect)
+                            {
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default parameter-selectcustom" type="button">></button>
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
                 @if (parameter.MultipleSelect)
                 {
-                    <div class="paramcenter">
-                        <input type="button" class="multi-select select-button one" value=">" />
-                        <br />
-                        <input type="button" class="multi-select select-button all" value=">>" />
+                    <div class="col-sm-1">
+                        <div class="btn-group-vertical" role="group">
+                            <button type="button" class="btn btn-default parameter-select">
+                                >
+                            </button>
+                            <button type="button" class="btn btn-default parameter-selectall">
+                                >>
+                            </button>
+                        </div>
                     </div>
+                    <div class="col-lg-5">
+                        <select multiple=@parameter.MultipleSelect class="form-control parameter-selection"></select>
+                        <div class="btn-group pull-right" role="group">
+                            <button type="button" class="btn btn-default parameter-remove">Remove</button>
+                            <button type="button" class="btn btn-default parameter-removeall">Remove All</button>
+                        </div>
+                    </div>
+
                 }
-                @if (parameter.AllowCustomValues)
-                {
-                    <p>Enter a Value:</p>
-                    <input type="text" class="text-input" value="@parameter.DefaultValue" />
-                    if (parameter.MultipleSelect)
-                    {
-                        <input type="button" class="select-button custom" value=">" />
-                    }
-                }
+
             </div>
-            @if (parameter.MultipleSelect)
-            {
-                <div class="paramright">
-                    <select multiple=@parameter.MultipleSelect class="parameter select-box"></select>
-                    <input type="button" class="remove-button all" value="Remove All" />
-                    <input type="button" class="remove-button" value="Remove" />
-                </div>
-            }
-
         </div>
-    }
-    <strong>Output Format:</strong>
-    <select id="output-format">
-        @foreach (var option in Model.Output)
-        {
-            if (option.Value == "5")
-            {
-                <option value="@option.Value" selected="selected">@option.Description</option>
-            }
-            else
-            {
-                <option value="@option.Value">@option.Description</option>
-            }
 
-        }
-    </select>
-    <strong>E-Mail:</strong>
-    <input type="text" id="email" /><br />
-    <input type="button" id="submit" value="Submit" />
-</body>
-</html>
+    }
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="input-group">
+                <span class="input-group-addon">E-mail:</span>
+                <input type="text" class="form-control" id="email" />
+            </div>
+        </div>
+    </div>
+    <div class="well well-sm form-inline">
+        <strong>Output Format:</strong>
+        <select class="form-control" id="output-format">
+            @foreach (var option in Model.Output)
+            {
+                if (option.Value == "5")
+                {
+                    <option value="@option.Value" selected="selected">@option.Description</option>
+                }
+                else
+                {
+                    <option value="@option.Value">@option.Description</option>
+                }
+
+            }
+        </select>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-block report-submit">Submit</button>
+</div>
