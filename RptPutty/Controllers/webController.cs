@@ -13,11 +13,13 @@ namespace RptPutty.Controllers
         private enumReport enumRpt;
         private dispatchJob dispatcher;
         private ReportListing svcListing;
+        private StatusTracker statusSvc;
         public webController()
         {
             this.enumRpt = new enumReport();
             this.dispatcher = new dispatchJob();
             this.svcListing = new ReportListing();
+            this.statusSvc = new StatusTracker();
         }
 
         //
@@ -40,7 +42,11 @@ namespace RptPutty.Controllers
         }
         public ActionResult reports(string id)
         {
-            return View(svcListing.getAllJobs(id));
+            return View(svcListing.getAllReports(id));
+        }
+        public ActionResult status ()
+        {
+            return View(statusSvc.getAllJobs());
         }
     }
 }
