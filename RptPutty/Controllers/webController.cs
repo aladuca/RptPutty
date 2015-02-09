@@ -42,7 +42,21 @@ namespace RptPutty.Controllers
         }
         public ActionResult reports(string id)
         {
-            return View(svcListing.getAllReports(id));
+            if (!string.IsNullOrWhiteSpace(id))
+                return View(svcListing.getAllReports(id));
+            else
+            {
+            if (!string.IsNullOrWhiteSpace(User.Identity.Name))
+                {
+                    string pattern = "^.*\\\\";
+                    string replacement = "";
+                    System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(pattern);
+                    string result = rgx.Replace(User.Identity.Name, replacement);
+                    return View(svcListing.getAllReports(result));
+                }
+                else
+                    return View(new ReportListing());
+            }
         }
         public ActionResult status ()
         {
