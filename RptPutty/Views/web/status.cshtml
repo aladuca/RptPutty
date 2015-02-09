@@ -5,26 +5,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="col-lg-12">
-    <h2>status</h2>
-    <table class="table table-bordered">
-        <tr>
-            <th>Job ID</th>
-            <th>User</th>
-            <th>File</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Status</th>
-        </tr>
-        @foreach (var job in @Model)
-        {
-            <tr class='@(job.status.ToString() == "Processing" ? "active" : null) @(job.status.ToString() == "Completed" ? "success" : null) @(job.status.ToString() == "Failed" ? "danger" : null)'>
-                <td>@job.ID.ToString()</td>
-                <td>@job.requestor</td>
-                <td>@job.filename</td>
-                <td>@job.start</td>
-                <td>@job.end</td>
-                <td>@job.status</td>
+    <h2>Status</h2>
+    @if (@Model.Count == 0)
+    {<div class="alert alert-info" role="alert">No reports ran in the last 24 Hours</div>}
+    else
+    {
+        <table class="table table-bordered">
+            <tr>
+                <th>Job ID</th>
+                <th>User</th>
+                <th>File</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Status</th>
             </tr>
-        }
-    </table>
+            @foreach (var job in @Model)
+            {
+                <tr class='@(job.status.ToString() == "Processing" ? "active" : null) @(job.status.ToString() == "Completed" ? "success" : null) @(job.status.ToString() == "Failed" ? "danger" : null)'>
+                    <td>@job.ID.ToString()</td>
+                    <td>@job.requestor</td>
+                    <td>@job.filename</td>
+                    <td>@job.start</td>
+                    <td>@job.end</td>
+                    <td>@job.status</td>
+                </tr>
+            }
+        </table>
+    }|
 </div>
