@@ -69,8 +69,8 @@
                 valselection(parameterRoot, inputText, "Custom - " + inputText);
                 $(parameterRoot).find('input:text').val("");
             }
-
         }); //End of select button
+        
         //Verify if value is already in select box (if not add)
         function valselection(parameter, value, text) {
             var duplicated = false;
@@ -98,6 +98,62 @@
             });
         }); //End remove selected values
 
+        $('button.email-to').click(function () {
+            var emailRoot = $(this).parents("div.email");
+            var email = $("#email").val()
+            var duplicated = false;
+            $(emailRoot).find('select.email-to> option').each(function () {
+                if ($(this).val() == email) {
+                    duplicated = true;
+                    $("#email").val("");
+                }
+            });
+            if (!duplicated && email != "") {
+                $(emailRoot).find('select.email-to').append($('<option>', { value: email }).text(email));
+                $("#email").val("");
+            }
+        });
+        $('button.email-cc').click(function () {
+            var emailRoot = $(this).parents("div.email");
+            var email = $("#email").val()
+            var duplicated = false;
+            $(emailRoot).find('select.email-cc > option').each(function () {
+                if ($(this).val() == email) {
+                    duplicated = true;
+                    $("#email").val("");
+                }
+            });
+            if (!duplicated && email != "") {
+                $(emailRoot).find('select.email-cc').append($('<option>', { value: email }).text(email));
+                $("#email").val("");
+            }
+        });
+        //Remove selected values
+        $('button.email-to-removeall').click(function () {
+            var emailRoot = $(this).parents("div.email");
+            $(emailRoot).find('select.email-to > option').each(function () {
+                $(this).remove();
+            });
+        });
+        $('button.email-to-remove').click(function () {
+            var emailRoot = $(this).parents("div.email");
+            $(emailRoot).find('select.email-to > option:selected').each(function () {
+                $(this).remove();
+            });
+        }); //End remove selected values
+        //Remove selected values
+        $('button.email-cc-removeall').click(function () {
+            var emailRoot = $(this).parents("div.email");
+            $(emailRoot).find('select.email-cc > option').each(function () {
+                $(this).remove();
+            });
+        });
+        $('button.email-cc-remove').click(function () {
+            var emailRoot = $(this).parents("div.email");
+            $(emailRoot).find('select.email-cc > option:selected').each(function () {
+                $(this).remove();
+            });
+        }); //End remove selected values
 
         //Submit button handler
         $("button.report-submit").click(function () {
@@ -118,9 +174,18 @@
                 }
                 else {
                     //Parameters that allow single selections
-                    if ($(this).find('select').val() != "") {
-                        paramValues.push($(this).find('select').val());
-                        noinput = false;
+                    if ($(this).find('select').length) {
+                        if ($(this).find('select').val() != "") {
+                            paramValues.push($(this).find('select').val());
+                            noinput = false;
+                        }
+                    }
+                    else
+                    {
+                        if ($(this).find('input').val() != "") {
+                            paramValues.push($(this).find('input').val());
+                            noinput = false;
+                        }
                     }
                 }
                 //Change color of div if no input is detected
@@ -151,13 +216,21 @@
                 }
             };
             if (!validation) { alert("Missing Input"); }
-            if ($("#email").val() == "") {
+
+            $('button.email-to').click();
+            if (!$("select.email-to > option").length) {
                 alert("Missing Email");
                 validation = false;
             }
             else {
-                reportJob.email.to.push($("#email").val());
+                $("select.email-to > option").each(function () {
+                    reportJob.email.to.push($(this).val());
+                });
+                $("select.email-cc > option").each(function () {
+                    reportJob.email.cc.push($(this).val());
+                });
             }
+
             if (validation) {
                 $.ajax({
                     type: "POST",
@@ -249,11 +322,33 @@
         </div>
 
     }
-    <div class="panel panel-default">
+    <div class="panel panel-default email">
         <div class="panel-heading">
             <div class="input-group">
                 <span class="input-group-addon">E-mail:</span>
                 <input type="text" class="form-control" id="email" />
+                <div class="input-group-btn">
+                    <button class="btn btn-default email-to" type="button">TO</button>
+                    <button class="btn btn-default email-cc" type="button">CC</button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-6">
+                TO:
+                <select class="form-control parameter-selection email-to" multiple></select>
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" class="btn btn-default email-to-remove">Remove</button>
+                    <button type="button" class="btn btn-default email-to-removeall">Remove All</button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                CC: 
+                <select class="form-control parameter-selection email-cc" multiple></select>
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" class="btn btn-default email-cc-remove">Remove</button>
+                    <button type="button" class="btn btn-default email-cc-removeall">Remove All</button>
+                </div>
             </div>
         </div>
     </div>
