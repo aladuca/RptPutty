@@ -32,9 +32,10 @@ namespace RptPutty.Models
             Output.Add(new Option("11", "TabSeperatedText"));
             Output.Add(new Option("12", "EditableRTF"));
             Output.Add(new Option("13", "Xml"));
-            Output.Add(new Option("13", "RPTR"));
-            Output.Add(new Option("13", "ExcelWorkbook"));
+            Output.Add(new Option("14", "RPTR"));
+            Output.Add(new Option("15", "ExcelWorkbook"));
         }
+        public Guid guid { get; set; }
         public string Filename { get; set; }
         public string Title { get; set; }
         public List<Parameters> Parameters { get; set; }
