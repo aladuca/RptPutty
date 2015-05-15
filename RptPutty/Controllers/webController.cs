@@ -14,12 +14,14 @@ namespace RptPutty.Controllers
         private dispatchJob dispatcher;
         private ReportListing svcListing;
         private StatusTracker statusSvc;
+        private Security security;
         public webController()
         {
             this.enumRpt = new enumReport();
             this.dispatcher = new dispatchJob();
             this.svcListing = new ReportListing();
             this.statusSvc = new StatusTracker();
+            this.security = new Security();
         }
 
         //
@@ -43,10 +45,11 @@ namespace RptPutty.Controllers
         public ActionResult reports(string id)
         {
             if (!string.IsNullOrWhiteSpace(id))
-                return View(svcListing.getAllReports(id));
+                if (security.getAdmin(User.Identity.Name)) { return View(svcListing.getAllReports(id)); }
+                else { return RedirectToRoute(new { controller = "web", action = "reports", id="" }); }
             else
             {
-            if (!string.IsNullOrWhiteSpace(User.Identity.Name))
+                if (!string.IsNullOrWhiteSpace(User.Identity.Name))
                 {
                     string pattern = "^.*\\\\";
                     string replacement = "";
@@ -55,12 +58,18 @@ namespace RptPutty.Controllers
                     return View(svcListing.getAllReports(result));
                 }
                 else
-                    return View(new ReportListing());
+                    return View(new List<Listing>());
             }
         }
-        public ActionResult status ()
+        public ActionResult status()
         {
-            return View(statusSvc.getAllJobs());
+            var status = statusSvc.getAllJobs();
+            if (security.getAdmin(User.Identity.Name)) { return View(status.OrderByDescending(x => x.start).ToList()); }
+            else {
+                status.RemoveAll(j => !User.Identity.Name.Equals(j.requestor));
+                return View(status.OrderByDescending(x => x.start).ToList());
+            }
+            //return View(statusSvc.getAllJobs());
         }
     }
 }

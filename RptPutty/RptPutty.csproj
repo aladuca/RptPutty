@@ -136,6 +136,7 @@
     <Compile Include="Services\dispatchJob.cs" />
     <Compile Include="Services\enumReport.cs" />
     <Compile Include="Services\ReportListing.cs" />
+    <Compile Include="Services\Security.cs" />
     <Compile Include="Services\StatusTracker.cs" />
   </ItemGroup>
   <ItemGroup>
