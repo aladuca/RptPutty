@@ -8,15 +8,27 @@ namespace RptPutty.Models
     public class ReportJob
     {
         public Guid JobID { get; set; }
-        public Report report { get; set; }
+        public ReportBase report { get; set; }
         public Email email { get; set; }
     }
     // Base Report Class Definition
-    public class Report
+    public class ReportBase
     {
-        public Report()
+        public ReportBase()
         {
-            Parameters = new List<Parameters>();
+            Parameters = new List<ParametersBase>();
+        }
+        public Guid guid { get; set; }
+        public string Filename { get; set; }
+        public string Title { get; set; }
+        public List<ParametersBase> Parameters { get; set; }
+        public Output SelectedOutput { get; set; }
+    }
+    public class ReportDetail
+    {
+        public ReportDetail()
+        {
+            Parameters = new List<ParametersDetail>();
             Output = new List<Option>();
             Output.Add(new Option("0", "NoFormat"));
             Output.Add(new Option("1", "CrystalReport"));
@@ -38,13 +50,18 @@ namespace RptPutty.Models
         public Guid guid { get; set; }
         public string Filename { get; set; }
         public string Title { get; set; }
-        public List<Parameters> Parameters { get; set; }
+        public List<ParametersDetail> Parameters { get; set; }
         public List<Option> Output { get; set; }
         public Output SelectedOutput { get; set; }
     }
-    public class Parameters
+    public class ParametersBase
     {
-        public Parameters()
+        public string Name { get; set; }
+        public List<string> SelectedValues { get; set; }
+    }
+    public class ParametersDetail
+    {
+        public ParametersDetail()
         {
             DiscreteValues = new List<Option>();
             SelectedValues = new List<string>();
@@ -100,5 +117,4 @@ namespace RptPutty.Models
         public string body { get; set; }
         public bool supressparameters { get; set; }
     }
-
 }

@@ -1,4 +1,4 @@
-﻿@model RptPutty.Models.Report
+﻿@model RptPutty.Models.ReportDetail
 
 @{
     ViewBag.Title = "Report Generator";
@@ -6,7 +6,7 @@
 }
 
 <script type="text/javascript">
-    var model = @Html.Raw(Json.Encode(@Model))
+    var model = @Html.Raw(Json.Encode(Newtonsoft.Json.JsonConvert.DeserializeObject<RptPutty.Models.ReportBase>(Newtonsoft.Json.JsonConvert.SerializeObject(@Model))))
 
     $("document").ready(function () {
         //Onload move default options to selected
