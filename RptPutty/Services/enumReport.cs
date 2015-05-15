@@ -14,18 +14,20 @@ namespace RptPutty.Services
 {
     public class enumReport
     {
-        public Report RunDefinition()
+        public ReportDetail RunDefinition()
         {
             return RunDefinition(ConfigurationManager.AppSettings["defaultReport"]);
 
         }
-        public Report RunDefinition(string filename)
+        public ReportDetail RunDefinition(string filename)
         {
-            Report rptDef = new Report();
+            ReportDetail rptDef = new ReportDetail();
             rptDef.Filename = ConfigurationManager.AppSettings["searchPath"] + filename;
             
 
             ReportDocument rptDoc = new ReportDocument();
+
+            //TODO: Check if file exists; if not throw error page
 
             try { rptDoc.Load(rptDef.Filename); }
             catch { return null; }
@@ -50,7 +52,7 @@ namespace RptPutty.Services
             // Populate Parameter Details
             foreach (ParameterFieldDefinition prm in rptDoc.DataDefinition.ParameterFields)
             {
-                Parameters param = new Parameters();
+                ParametersDetail param = new ParametersDetail();
                 if (!prm.IsLinked() && !prm.ParameterFieldUsage2.ToString().Equals("NotInUse"))
                 {
                     param.Name = prm.Name;
