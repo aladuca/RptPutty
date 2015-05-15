@@ -16,10 +16,13 @@ namespace RptPutty.Services
             List<Listing> list = new List<Listing>();
             using (OdbcConnection oconn = new OdbcConnection(ConfigurationManager.ConnectionStrings["UserAccess"].ConnectionString))
             {
-                OdbcCommand ocomm = new OdbcCommand("SELECT DISTINCT X_FILE_NAME, X_HRX_NAME "+
+                OdbcCommand ocomm = new OdbcCommand("SELECT DISTINCT X_FILE_NAME, CLARITY_RPT.REPORT_NAME " +
                     "FROM X_CLARITY_SUBSCRIB "+
                     "INNER JOIN CLARITY_EMP ON X_CLARITY_SUBSCRIB.USER_NUMBER_ID=CLARITY_EMP.USER_ID "+
-                    "WHERE CLARITY_EMP.SYSTEM_LOGIN=? AND X_FILE_NAME IS NOT NULL");
+                    "LEFT JOIN REPORT_INFO ON X_CLARITY_SUBSCRIB.SUBSCRIBED_REPT_ID = REPORT_INFO.REPORT_INFO_ID " +
+                    "LEFT JOIN TEMPLATE_INFO ON REPORT_INFO.REPORT_ID  = TEMPLATE_INFO.REPORT_ID " +
+                    "LEFT JOIN CLARITY_RPT ON REPORT_INFO.REPORT_ID = CLARITY_RPT.ASSOC_REPORT_ID " +
+                    "WHERE CLARITY_EMP.SYSTEM_LOGIN=? AND X_FILE_NAME IS NOT NULL AND CLARITY_RPT.REPORT_NAME IS NOT NULL AND TEMPLATE_INFO.STATUS_C = 0");
                 ocomm.Parameters.Add(new OdbcParameter("username", username));
                 ocomm.Connection = oconn;
 
