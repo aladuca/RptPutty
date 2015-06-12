@@ -35,7 +35,19 @@ namespace RptPutty.Controllers
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
-                return View(enumRpt.RunDefinition(id));
+                string pattern = "^.*\\\\";
+                string replacement = "";
+                System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex(pattern);
+                string result = rgx.Replace(User.Identity.Name, replacement);
+
+                if (security.getAdmin(User.Identity.Name) || svcListing.getReportAccess(result, id))
+                {
+                    return View(enumRpt.RunDefinition(id));
+                }
+                else
+                {
+                    return View("Denial");
+                }
             }
             else
             {
@@ -69,7 +81,6 @@ namespace RptPutty.Controllers
                 status.RemoveAll(j => !User.Identity.Name.Equals(j.requestor));
                 return View(status.OrderByDescending(x => x.start).ToList());
             }
-            //return View(statusSvc.getAllJobs());
         }
     }
 }
