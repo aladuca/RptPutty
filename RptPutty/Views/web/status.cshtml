@@ -19,24 +19,18 @@
                 <th>End</th>
                 <th>Status</th>
             </tr>
-            @{ var rptExports = RptPutty.Services.OpenStack.getExports();}
             @foreach (var job in @Model)
             {
-                <tr class='@(job.status.ToString() == "Processing" ? "active" : null) @(job.status.ToString() == "Completed" ? "success" : null) @(job.status.ToString() == "Failed" ? "danger" : null)'>
-                    @{String export = @rptExports.FirstOrDefault(expt => expt.Contains(@job.ID.ToString()));}
+                <tr>
                     <td>@job.ID.ToString() </td>
 
-                    <td>@job.requestor</td>
-                    @if (String.IsNullOrEmpty(export))
-                    {
-                        <td>@job.filename</td>                     }
-                    else
-                    {
-                        <td>@job.filename - <a href="@export">View</a></td>}
+                    <td>@job.REQUESTOR</td>
+                    <td>@job.FILENAME</td>
+
                     
-                    <td>@job.start</td>
-                    <td>@job.end</td>
-                    <td>@job.status</td>
+                    <td>@job.PROCESS_START</td>
+                    <td>@job.PROCESS_END</td>
+                    <td>@job.STATUS_C</td>
                 </tr>
             }
         </table>

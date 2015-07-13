@@ -1,12 +1,10 @@
-﻿@{
-    ViewBag.Title = "Index";
-}
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>@ViewBag.Title</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" media="all" />
+    <link href="@Url.Content("~/Content/main.css")" rel="stylesheet" type="text/css" media="all" />
     <script src="@Url.Content("~/Scripts/jquery-1.11.1.min.js")"></script>
     <script src="@Url.Content("~/Scripts/json3.min.js")"></script>
     <script src="@Url.Content("~/Scripts/response.js")"></script>
@@ -35,6 +33,9 @@
     <div id="content" class="container">
         @RenderBody()
     </div>
+    <footer class="footer">
+        <div class="container"></div>
+    </footer>
 </body>
 </html>
 
