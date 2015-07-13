@@ -13,19 +13,20 @@ namespace RptPutty.Services
         {
             bool? isAdmin = false;
             if (string.IsNullOrEmpty(userName)) { return (bool) isAdmin; }
-            using (SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["RptPutty"].ConnectionString))
-            {
-                SqlCommand sqlcmd = new SqlCommand("SELECT [ADMIN] FROM [USERS] WHERE USERNAME = @USER", sqlcon);
-                sqlcmd.Parameters.Add(new SqlParameter("@USER", userName));
+            //using (SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["RptPutty"].ConnectionString))
+            //{
+            //    SqlCommand sqlcmd = new SqlCommand("SELECT [ADMIN] FROM [USERS] WHERE USERNAME = @USER", sqlcon);
+            //    sqlcmd.Parameters.Add(new SqlParameter("@USER", userName));
                 
-                try
-                {
-                    sqlcon.Open();
-                    isAdmin = (bool)sqlcmd.ExecuteScalar();
-                }
-                catch { }
-            }
-            if (!isAdmin.HasValue) { isAdmin = false; }
+            //    try
+            //    {
+            //        sqlcon.Open();
+            //        isAdmin = (bool)sqlcmd.ExecuteScalar();
+            //    }
+            //    catch { }
+            //}
+            isAdmin = RptPutty.Database.UserSecurity.UserAdmin(userName);
+            //if (!isAdmin.HasValue) { isAdmin = false; }
             return (bool) isAdmin;
         }
     }

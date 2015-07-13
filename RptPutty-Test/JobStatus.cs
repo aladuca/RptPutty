@@ -22,10 +22,10 @@ namespace RptPutty_Test
             var svcStatus = new RptPutty.Services.StatusTracker();
             svcStatus.getJob(rptJob.JobID);
             RptPutty.Models.JobStatus statJob = svcStatus.getJob(rptJob.JobID);
-            statJob.status = RptPutty.Models.Status.Processing;
-            statJob.worker = "TestBoxA";
-            statJob.start = DateTime.Now;
-            statJob.end = DateTime.Parse("1753-01-01T00:00:00");
+            statJob.STATUS_C = (int)RptPutty.Models.Status.Processing;
+            statJob.WORKER = "TestBoxA";
+            statJob.PROCESS_START = DateTime.Now;
+            statJob.PROCESS_END = DateTime.Parse("1753-01-01T00:00:00");
             svcStatus.updateJob(statJob);
         }
         [TestMethod]
@@ -38,13 +38,13 @@ namespace RptPutty_Test
             
             var svcStatus = new RptPutty.Services.StatusTracker();           
             var statJob = svcStatus.getJob(rptJob.JobID);
-            statJob.status = RptPutty.Models.Status.Processing;
-            statJob.worker = "TestBoxA";
-            statJob.start = DateTime.Now;
+            statJob.STATUS_C = (int)RptPutty.Models.Status.Processing;
+            statJob.WORKER = "TestBoxA";
+            statJob.PROCESS_START = DateTime.Now;
             svcStatus.updateJob(statJob);
 
-            statJob.status = RptPutty.Models.Status.Completed;
-            statJob.end = DateTime.Now.Add(new TimeSpan(0, 5, 0));
+            statJob.STATUS_C = (int)RptPutty.Models.Status.Completed;
+            statJob.PROCESS_END = DateTime.Now.Add(new TimeSpan(0, 5, 0));
             svcStatus.updateJob(statJob);
         }
         [TestMethod]
@@ -56,13 +56,13 @@ namespace RptPutty_Test
 
             var svcStatus = new RptPutty.Services.StatusTracker();
             var statJob = svcStatus.getJob(rptJob.JobID);
-            statJob.status = RptPutty.Models.Status.Processing;
-            statJob.worker = "TestBoxA";
-            statJob.start = DateTime.Now;
+            statJob.STATUS_C = (int)RptPutty.Models.Status.Processing;
+            statJob.WORKER = "TestBoxA";
+            statJob.PROCESS_START = DateTime.Now;
             svcStatus.updateJob(statJob);
 
-            statJob.status = RptPutty.Models.Status.Failed;
-            statJob.end = DateTime.Now.Add(new TimeSpan(0, 5, 0));
+            statJob.STATUS_C = (int)RptPutty.Models.Status.Failed;
+            statJob.PROCESS_END = DateTime.Now.Add(new TimeSpan(0, 5, 0));
             svcStatus.updateJob(statJob);
         }
         public RptPutty.Models.ReportJob testingJob()

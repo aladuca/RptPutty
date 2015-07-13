@@ -45,13 +45,7 @@ namespace RptPutty.Services
             bool reportCount = false;
             using (OdbcConnection oconn = new OdbcConnection(ConfigurationManager.ConnectionStrings["UserAccess"].ConnectionString))
             {
-                OdbcCommand ocomm = new OdbcCommand("SELECT DISTINCT X_FILE_NAME, CLARITY_RPT.REPORT_NAME " +
-                    "FROM X_CLARITY_SUBSCRIB " +
-                    "INNER JOIN CLARITY_EMP ON X_CLARITY_SUBSCRIB.USER_NUMBER_ID=CLARITY_EMP.USER_ID " +
-                    "LEFT JOIN REPORT_INFO ON X_CLARITY_SUBSCRIB.SUBSCRIBED_REPT_ID = REPORT_INFO.REPORT_INFO_ID " +
-                    "LEFT JOIN TEMPLATE_INFO ON REPORT_INFO.REPORT_ID  = TEMPLATE_INFO.REPORT_ID " +
-                    "LEFT JOIN CLARITY_RPT ON REPORT_INFO.REPORT_ID = CLARITY_RPT.ASSOC_REPORT_ID " +
-                    "WHERE CLARITY_EMP.SYSTEM_LOGIN=? AND X_FILE_NAME=? AND CLARITY_RPT.REPORT_NAME IS NOT NULL AND TEMPLATE_INFO.STATUS_C = 0");
+                OdbcCommand ocomm = new OdbcCommand(ConfigurationManager.AppSettings["extReportAccess"]);
                 ocomm.Parameters.Add("login", OdbcType.VarChar).Value = username;
                 ocomm.Parameters.Add("filename", OdbcType.VarChar).Value = fname;
                 ocomm.Connection = oconn;

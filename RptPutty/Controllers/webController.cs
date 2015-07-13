@@ -76,10 +76,10 @@ namespace RptPutty.Controllers
         public ActionResult status()
         {
             var status = statusSvc.getAllJobs();
-            if (security.getAdmin(User.Identity.Name)) { return View(status.OrderByDescending(x => x.start).ToList()); }
+            if (security.getAdmin(User.Identity.Name)) { return View(status.OrderByDescending(x => x.PROCESS_START).ToList()); }
             else {
-                status.RemoveAll(j => !User.Identity.Name.Equals(j.requestor));
-                return View(status.OrderByDescending(x => x.start).ToList());
+                status.RemoveAll(j => !User.Identity.Name.Equals(j.REQUESTOR));
+                return View(status.OrderByDescending(x => x.PROCESS_START).ToList());
             }
         }
     }

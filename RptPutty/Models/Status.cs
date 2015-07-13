@@ -8,13 +8,24 @@ namespace RptPutty.Models
     public class JobStatus
     {
         public Guid ID { get; set; }
-        public Status status { get; set; }
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
-        public String filename { get; set; }
-        public String requestor { get; set; }
-        public String worker { get; set; }
-        public Int32 processID { get; set; }
+        public int STATUS_C { get; set; }
+        public Nullable<DateTime> PROCESS_START { get; set; }
+        public Nullable<DateTime> PROCESS_END { get; set; }
+        public String FILENAME { get; set; }
+        public String REQUESTOR { get; set; }
+        public String WORKER { get; set; }
+        public Nullable<Int32> PROCESS_ID { get; set; }
+
+        //public Guid ID { get; set; }
+        public Nullable<DateTime> REQUEST_TIME { get; set; }
+        //public int STATUS_C { get; set; }
+        //public String FILENAME { get; set; }
+        //public String REQUESTOR { get; set; }
+        //public String WORKER { get; set; }
+        //public String PROCESS_ID { get; set; }
+        //public Nullable<DateTime> PROCESS_START { get; set; }
+        //public Nullable<DateTime> PROCESS_END { get; set; }
+        //public String PARAMETERS { get; set; }
     }
     public enum Status
     {

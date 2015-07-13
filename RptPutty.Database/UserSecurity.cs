@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
 
 namespace RptPutty.Database
 {
-    class UserSecurity
+    public class UserSecurity
     {
-        static Boolean UserAdmin(String userName)
+        public static Boolean UserAdmin(String userName)
         {
             using (var db = new UsersContext())
             {
@@ -21,10 +22,11 @@ namespace RptPutty.Database
         {
             //Ensure SQL Provider is copied : http://stackoverflow.com/questions/21641435/error-no-entity-framework-provider-found-for-the-ado-net-provider-with-invarian
             public UsersContext() : base("name=RptPutty") { var ensureDLLIsCopied = System.Data.Entity.SqlServer.SqlProviderServices.Instance; }
-            public DbSet<USER> Users { get; set; }
+            public DbSet<USERS> Users { get; set; }
         }
-        public class USER
+        public class USERS
         {
+            [Key]
             public String USERNAME { get; set; }
             public Boolean ADMIN_FLAG { get; set; }
         }

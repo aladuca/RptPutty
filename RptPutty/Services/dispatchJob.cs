@@ -22,11 +22,11 @@ namespace RptPutty.Services
 
             JobStatus jobStatus = new JobStatus();
             jobStatus.ID = reportJob.JobID;
-            jobStatus.filename = Path.GetFileName(reportJob.report.Filename);
-            jobStatus.status = Status.Queued;
-            jobStatus.requestor = user;
+            jobStatus.FILENAME = Path.GetFileName(reportJob.report.Filename);
+            jobStatus.STATUS_C = (int)Status.Queued;
+            jobStatus.REQUESTOR = user;
 
-            RptPutty.Database.JobStatus.CreateJobStatus(jobStatus.ID, 0, jobStatus.filename, jobStatus.requestor, jss.Serialize(reportJob));
+            RptPutty.Database.JobStatus.CreateJobStatus(jobStatus.ID, 0, jobStatus.FILENAME, jobStatus.REQUESTOR, jss.Serialize(reportJob));
             //StatusTracker st = new StatusTracker();
             //try { st.newJob(jobStatus); }
             //catch { }

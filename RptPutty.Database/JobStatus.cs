@@ -9,12 +9,22 @@ namespace RptPutty.Database
 {
     public class JobStatus
     {
-        static IList<JOB_STATUS> GetJobStatuses(int hours)
+        public static IList<JOB_STATUS> GetJobStatuses(int hours)
         {
             using (var db = new JobStatusesContext())
             {
-                var jobStatuses = from jobs in db.JobStatuses where jobs.END_TIME == DateTime.Parse("1753-01-01T00:00:00") || jobs.END_TIME <= DateTime.Now.AddHours(hours) || jobs.END_TIME == null select jobs;
+                DateTime limithours = DateTime.Now.AddHours(hours);
+                var jobStatuses = from jobs in db.JobStatuses where jobs.PROCESS_END == null || jobs.PROCESS_END >= limithours select jobs;
                 return jobStatuses.ToList();
+            }
+        }
+        public static JOB_STATUS GetJobStatus(Guid ID)
+        {
+            using (var db = new JobStatusesContext())
+            {
+                DateTime limithours = DateTime.Now.AddHours(-48);
+                var jobStatuses = from jobs in db.JobStatuses where jobs.ID == ID select jobs;
+                return jobStatuses.FirstOrDefault();
             }
         }
         public static void CreateJobStatus(Guid id, int status, string filename, string requestor, string parameters)
@@ -47,8 +57,8 @@ namespace RptPutty.Database
                     job.WORKER = worker;
                     job.PROCESS_ID = process;
                     job.STATUS_C = status;
-                    job.START_TIME = start;
-                    job.END_TIME = end;
+                    job.PROCESS_START = start;
+                    job.PROCESS_END = end;
                     try { db.SaveChanges(); }
                     catch { System.Threading.Thread.Sleep(300); db.SaveChanges(); }
                 }
@@ -63,13 +73,14 @@ namespace RptPutty.Database
     public class JOB_STATUS
     {
         public Guid ID { get; set; }
+        public Nullable<DateTime> REQUEST_TIME { get; set; }
         public int STATUS_C { get; set; }
         public String FILENAME { get; set; }
         public String REQUESTOR { get; set; }
         public String WORKER { get; set; }
         public String PROCESS_ID { get; set; }
-        public Nullable<DateTime> START_TIME { get; set; }
-        public Nullable<DateTime> END_TIME { get; set; }
+        public Nullable<DateTime> PROCESS_START { get; set; }
+        public Nullable<DateTime> PROCESS_END { get; set; }
         public String PARAMETERS { get; set; }
     }
 }
