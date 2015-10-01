@@ -10,29 +10,34 @@
     {<div class="alert alert-info" role="alert">No reports ran in the last 24 Hours</div>}
     else
     {
-        <table class="table table-bordered">
-            <tr>
-                <th>Job ID</th>
-                <th>User</th>
-                <th>File</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Status</th>
-            </tr>
-            @foreach (var job in @Model)
-            {
-                <tr>
-                    <td>@job.ID.ToString() </td>
-
-                    <td>@job.REQUESTOR</td>
-                    <td>@job.FILENAME</td>
-
-                    
-                    <td>@job.PROCESS_START</td>
-                    <td>@job.PROCESS_END</td>
-                    <td>@job.STATUS_C</td>
-                </tr>
-            }
-        </table>
-    }|
+      <table class="table table-bordered">
+          <tr>
+              <th>File</th>
+              <th>Start</th>
+              <th>End</th>
+          </tr>
+          @foreach (var job in @Model)
+          {
+            var rptparam = Newtonsoft.Json.JsonConvert.DeserializeObject<RptPutty.Models.ReportJob>(@job.PARAMETERS);
+              <tr data-toggle="collapse" data-target="#@job.ID.ToString()" class="@(job.STATUS_C == 1 ? "active" : null)@(job.STATUS_C == 2 ? "success" : null)@(job.STATUS_C == 3 ? "danger" : null)">
+                  <td>@job.FILENAME</td>
+                  <td>@job.PROCESS_START</td>
+                  <td>@job.PROCESS_END</td>
+              </tr>
+              <tr class="collapse" id="@job.ID.ToString()">
+              <td colspan=3>
+              <div>
+                <p><strong>JOB: </strong>@job.ID.ToString()</p>
+                <p><strong>Requestor: </strong>@job.REQUESTOR</p>
+                @foreach(var param in @rptparam.report.Parameters)
+                  {
+                    <p><strong>@param.Name: </strong>@string.Join(", ", param.SelectedValues)</p>
+                  }
+                <p><strong>Format: </strong>@rptparam.report.SelectedOutput</p>
+              </div>
+              </td>
+              </tr>
+          }
+      </table>
+    }
 </div>

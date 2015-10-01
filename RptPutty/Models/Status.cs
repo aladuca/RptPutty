@@ -18,6 +18,7 @@ namespace RptPutty.Models
 
         //public Guid ID { get; set; }
         public Nullable<DateTime> REQUEST_TIME { get; set; }
+        public String PARAMETERS { get; set; }
         //public int STATUS_C { get; set; }
         //public String FILENAME { get; set; }
         //public String REQUESTOR { get; set; }
